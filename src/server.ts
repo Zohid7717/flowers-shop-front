@@ -7,6 +7,7 @@ import discountRoute from './routes/discount.js'
 import flowerRoute from "./routes/flower.js"
 import bouquetRoute from "./routes/bouquet.js"
 import presentRoute from "./routes/present.js"
+import courseRoute from "./routes/course.js"
 import imageRoute from "./routes/image.js"
 import path, { dirname } from 'path'
 import { fileURLToPath } from "url";
@@ -29,6 +30,7 @@ app.use('/api/discount', discountRoute)
 app.use('/api/flower', flowerRoute)
 app.use('/api/bouquet', bouquetRoute)
 app.use('/api/present', presentRoute)
+app.use('/api/course', courseRoute)
 app.use('/api/img', imageRoute)
 
 async function start() {
