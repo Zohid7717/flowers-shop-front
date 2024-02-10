@@ -5,10 +5,10 @@ import { RequestHandler } from "express"
 //create Course
 export const createCourse: RequestHandler = async (req, res) => {
   try {
-    const { name, currentRate } = req.body
+    const { name, course } = req.body
     const newCourse = new Course({
       name,
-      course: currentRate
+      course: course
     })
     await newCourse.save()
     res.status(200).json({success: true, newCourse, message: 'Курс создан!'})
@@ -20,14 +20,15 @@ export const createCourse: RequestHandler = async (req, res) => {
 //update Course
 export const updateCourse: RequestHandler = async (req, res) => {
   try {
-    const {name, currentRate } = req.body
-    const course = await Course.findOne({name})
-    if (!course) {
+    const {name, course } = req.body
+    const newCourses = await Course.findOne({ name })
+    if (!newCourses) {
       res.status(400).json({ success: false, message: 'Валюта не найден!' })
     } else {
-      course.course = currentRate
-      await course.save()
-      return res.status(200).json({ course, success: true, message: 'Курс успешно обновлен!' })
+      newCourses.course = course
+      await newCourses.save()
+      const courses = await Course.find()
+      return res.status(200).json({ courses, success: true, message: 'Курс успешно обновлен!' })
     }
   } catch (error) {
     console.log(error)
@@ -38,11 +39,11 @@ export const updateCourse: RequestHandler = async (req, res) => {
 //get All Course
 export const getAllCourse: RequestHandler = async (req, res) => {
   try {
-    const course = await Course.find()
-    if (!course) {
+    const courses = await Course.find()
+    if (!courses) {
       return res.status(400).json({success: false, message: 'Ошибка при получении данных!'})
     }
-    res.status(200).json({course, success: true})
+    res.status(200).json({courses, success: true})
   } catch (error) {
     res.status(500).json({success: false, message: 'Ошибка при обработке данных!'})
   }

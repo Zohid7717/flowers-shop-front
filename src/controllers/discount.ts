@@ -62,7 +62,7 @@ export const updateDiscount: RequestHandler = async (req, res) => {
   try {
     const admin = await User.findById(req.userId)
     if (!admin?.admin) {
-      return res.status(403).json({message: 'Зайдите от имени администратора.'})
+      return res.status(403).json({success:false, message: 'Зайдите от имени администратора.'})
     }
     const discountId = req.params.id
     await Discount.updateOne(
@@ -74,9 +74,10 @@ export const updateDiscount: RequestHandler = async (req, res) => {
         status: req.body.status
       }
     )
-    res.status(200).json({message: 'Данные успешно обновлены.'})
+    const discount = await Discount.find()
+    res.status(200).json({discount, message: 'Данные успешно обновлены.'})
   } catch (error) {
-    res.status(500).json({ message: 'Что-то пошло не так. Повторите попытку.' })
+    res.status(500).json({success: false, message: 'Что-то пошло не так. Повторите попытку.' })
     console.log(error)
   }
 }
